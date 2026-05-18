@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

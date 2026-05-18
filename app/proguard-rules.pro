@@ -14,15 +14,15 @@
     volatile <fields>;
 }
 
-# ─── CropGuard model layer ───────────────────────────────────────────────────
+# ─── SprayMind model layer ───────────────────────────────────────────────────
 # Data classes are used by reference in Kotlin so R8 would normally keep them,
 # but being explicit protects against aggressive full-mode shrinking.
--keep class com.cropguard.DetectionResult { *; }
--keep enum com.cropguard.Severity { *; }
+-keep class com.spraymind.DetectionResult { *; }
+-keep enum com.spraymind.Severity { *; }
 
 # ─── WorkManager ─────────────────────────────────────────────────────────────
 # Worker subclasses are instantiated by reflection via WorkerFactory.
--keep class com.cropguard.InspectionReminderWorker { *; }
+-keep class com.spraymind.InspectionReminderWorker { *; }
 -keep class androidx.work.** { *; }
 -keepclassmembers class * extends androidx.work.Worker {
     public <init>(android.content.Context, androidx.work.WorkerParameters);

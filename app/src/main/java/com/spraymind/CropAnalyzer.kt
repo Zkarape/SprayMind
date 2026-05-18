@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -55,13 +55,13 @@ object CropAnalyzer {
                 "adb push gemma-4-E2B-it.litertlm /data/local/tmp/"
             )
         }
-        Log.d("CropGuard", "Model found: ${file.length() / 1_000_000} MB")
+        Log.d("SprayMind", "Model found: ${file.length() / 1_000_000} MB")
     }
 
     suspend fun initializeModel() {
         if (engine != null) return
         engine = buildEngine()
-        Log.d("CropGuard", "LiteRT engine ready")
+        Log.d("SprayMind", "LiteRT engine ready")
     }
 
     private fun buildEngine(): Engine {
@@ -90,10 +90,10 @@ object CropAnalyzer {
                     )
                 ).also {
                     it.initialize()
-                    Log.d("CropGuard", "Engine ready — backend=${backend::class.simpleName}, vision=${visionBackend::class.simpleName}")
+                    Log.d("SprayMind", "Engine ready — backend=${backend::class.simpleName}, vision=${visionBackend::class.simpleName}")
                 }
             } catch (e: Exception) {
-                Log.w("CropGuard", "Engine init failed (${backend::class.simpleName}+${visionBackend::class.simpleName}): ${e.message}")
+                Log.w("SprayMind", "Engine init failed (${backend::class.simpleName}+${visionBackend::class.simpleName}): ${e.message}")
                 lastException = e
             }
         }
@@ -120,9 +120,9 @@ object CropAnalyzer {
                     ).collect { conv.cancelProcess() }  // cancel on first token; pipeline is now warm
                 } catch (_: Exception) { /* cancelProcess() always throws — expected */ }
             }
-            Log.d("CropGuard", "Warmup complete")
+            Log.d("SprayMind", "Warmup complete")
         } catch (e: Exception) {
-            Log.w("CropGuard", "Warmup failed (non-fatal): ${e.message}")
+            Log.w("SprayMind", "Warmup failed (non-fatal): ${e.message}")
         } finally {
             tmp.delete()
         }
@@ -135,7 +135,7 @@ object CropAnalyzer {
     suspend fun analyzeFrame(imagePath: String, budget: ImageTokenBudget): DetectionResult {
         val eng = engine ?: error("Call initializeModel() first")
         val accumulated = StringBuilder()
-        Log.d("CropGuard", "analyzeFrame: budget=${budget.name} (${budget.tokens} tokens, ${budget.targetPx}px)")
+        Log.d("SprayMind", "analyzeFrame: budget=${budget.name} (${budget.tokens} tokens, ${budget.targetPx}px)")
 
         eng.createConversation(conversationConfig).use { conversation ->
             try {
@@ -157,7 +157,7 @@ object CropAnalyzer {
                 // cancelProcess() terminates the flow with an exception — that's expected.
                 // Only re-throw if we never received any data.
                 if (accumulated.isEmpty()) throw e
-                Log.d("CropGuard", "Stream ended after early parse (${accumulated.length} chars)")
+                Log.d("SprayMind", "Stream ended after early parse (${accumulated.length} chars)")
             }
         }
 
@@ -238,7 +238,7 @@ object CropAnalyzer {
                 }
 
                 lastResponse = accumulated.toString()
-                Log.d("CropGuard.Advisor", "Model turn ${turns + 1}: ${lastResponse.take(200)}")
+                Log.d("SprayMind.Advisor", "Model turn ${turns + 1}: ${lastResponse.take(200)}")
 
                 val (thinkText, cleanResponse) = parseThinkingAndResponse(lastResponse)
                 if (thinkText.isNotBlank()) onThinking?.invoke(thinkText)

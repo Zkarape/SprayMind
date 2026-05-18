@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 enum class Severity { NONE, LOW, MEDIUM, HIGH }
 

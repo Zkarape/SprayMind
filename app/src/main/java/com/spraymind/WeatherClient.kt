@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +49,7 @@ object WeatherClient {
                     )
                 }
             } catch (e: Exception) {
-                Log.w("CropGuard.Weather", "Forecast unavailable: ${e.message}")
+                Log.w("SprayMind.Weather", "Forecast unavailable: ${e.message}")
                 null
             }
         }

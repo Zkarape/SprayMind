@@ -1,4 +1,4 @@
-package com.cropguard.db
+package com.spraymind.db
 
 import android.content.Context
 import androidx.room.Database
@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
     version  = 2,
     exportSchema = false
 )
-abstract class CropGuardDatabase : RoomDatabase() {
+abstract class SprayMindDatabase : RoomDatabase() {
 
     abstract fun yardProfileDao(): YardProfileDao
     abstract fun yardSessionDao(): YardSessionDao
@@ -20,7 +20,7 @@ abstract class CropGuardDatabase : RoomDatabase() {
     abstract fun scheduledNotificationDao(): ScheduledNotificationDao
 
     companion object {
-        @Volatile private var INSTANCE: CropGuardDatabase? = null
+        @Volatile private var INSTANCE: SprayMindDatabase? = null
 
         // v1 → v2: optional GPS coordinates on yard_profiles + scheduled_notifications table.
         private val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -44,12 +44,12 @@ abstract class CropGuardDatabase : RoomDatabase() {
             }
         }
 
-        fun getInstance(context: Context): CropGuardDatabase =
+        fun getInstance(context: Context): SprayMindDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    CropGuardDatabase::class.java,
-                    "cropguard.db"
+                    SprayMindDatabase::class.java,
+                    "spraymind.db"
                 )
                     .addMigrations(MIGRATION_1_2)
                     .build()

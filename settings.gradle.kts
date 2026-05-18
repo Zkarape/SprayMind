@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "CropGuard"
+rootProject.name = "SprayMind"
 include(":app")

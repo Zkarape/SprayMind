@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -18,10 +18,10 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.cropguard.db.CropGuardDatabase
-import com.cropguard.db.ScanRecord
-import com.cropguard.db.YardProfile
-import com.cropguard.db.YardSession
+import com.spraymind.db.SprayMindDatabase
+import com.spraymind.db.ScanRecord
+import com.spraymind.db.YardProfile
+import com.spraymind.db.YardSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -50,7 +50,7 @@ sealed class AppState {
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val db = CropGuardDatabase.getInstance(application)
+    private val db = SprayMindDatabase.getInstance(application)
 
     // Resolution capped at 1280×960 — see LITERT_GEMMA4_GUIDE.md §10.
     val imageCapture: ImageCapture = ImageCapture.Builder()
@@ -149,7 +149,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _state.value = if (profiles.isEmpty()) AppState.YardSetup()
                                else AppState.YardSelect(profiles)
             } catch (e: Exception) {
-                Log.e("CropGuard", "Model load failed: ${e::class.simpleName}: ${e.message}", e)
+                Log.e("SprayMind", "Model load failed: ${e::class.simpleName}: ${e.message}", e)
                 _state.value = AppState.Error("${e::class.simpleName}: ${e.message}")
             }
         }
@@ -237,7 +237,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         val dist = FrameHasher.hammingDistance(prev, hash)
                         pendingSkippedFrames++
                         _skippedFrameCount.value = pendingSkippedFrames
-                        Log.d("CropGuard", "Frame skipped — Hamming=$dist, total skipped=$pendingSkippedFrames")
+                        Log.d("SprayMind", "Frame skipped — Hamming=$dist, total skipped=$pendingSkippedFrames")
                         skipped = true
                     } else {
                         lastFrameHash = hash
@@ -266,7 +266,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         _scanHistory.value       = _scanHistory.value + result
                     }
                 } catch (e: Exception) {
-                    Log.e("CropGuard", "Frame analysis error", e)
+                    Log.e("SprayMind", "Frame analysis error", e)
                 } finally {
                     _isAnalyzing.value = false
                     capturedFile?.delete()
@@ -345,7 +345,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                                 if (_advisorThinking.value.isBlank()) chunk else "\n\n$chunk"
                         }
                     )
-                }.onFailure { Log.e("CropGuard", "SessionAdvisor failed: ${it.message}", it) }
+                }.onFailure { Log.e("SprayMind", "SessionAdvisor failed: ${it.message}", it) }
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.cropguard.db
+package com.spraymind.db
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

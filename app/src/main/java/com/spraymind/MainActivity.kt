@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import android.Manifest
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
-import com.cropguard.ui.MainScreen
+import com.spraymind.ui.MainScreen
 
 class MainActivity : ComponentActivity() {
 

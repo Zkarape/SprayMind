@@ -1,13 +1,13 @@
-package com.cropguard
+package com.spraymind
 
 import android.content.Context
 import android.util.Log
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.cropguard.db.CropGuardDatabase
-import com.cropguard.db.ScheduledNotification
-import com.cropguard.db.YardProfile
+import com.spraymind.db.SprayMindDatabase
+import com.spraymind.db.ScheduledNotification
+import com.spraymind.db.YardProfile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit
 //
 object SessionAdvisor {
 
-    private const val TAG = "CropGuard.Advisor"
+    private const val TAG = "SprayMind.Advisor"
     private const val MAX_TOOL_TURNS  = 10   // safety ceiling on tool-call rounds
     private const val MAX_NOTIF_COUNT = 3    // notification fatigue limit per session
 
@@ -131,7 +131,7 @@ Tool call order: get_cell_history → get_weather_forecast (if needed) → sched
         yardProfile: YardProfile,
         scanHistory: List<DetectionResult>,
         notes: String,
-        db: CropGuardDatabase,
+        db: SprayMindDatabase,
         context: Context,
         onThinking: ((String) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
@@ -208,7 +208,7 @@ Tool call order: get_cell_history → get_weather_forecast (if needed) → sched
         toolName: String,
         argsJson: String,
         yardProfile: YardProfile,
-        db: CropGuardDatabase,
+        db: SprayMindDatabase,
         context: Context,
         scheduled: MutableList<Long>
     ): String {
@@ -233,7 +233,7 @@ Tool call order: get_cell_history → get_weather_forecast (if needed) → sched
     private suspend fun getCellHistory(
         args: JSONObject,
         yardProfile: YardProfile,
-        db: CropGuardDatabase
+        db: SprayMindDatabase
     ): String {
         val cellIndex = args.getInt("cellIndex")
         val lastN     = args.optInt("lastNSessions", 3).coerceIn(1, 5)
@@ -297,7 +297,7 @@ Tool call order: get_cell_history → get_weather_forecast (if needed) → sched
     private suspend fun scheduleNotification(
         args: JSONObject,
         yardProfile: YardProfile,
-        db: CropGuardDatabase,
+        db: SprayMindDatabase,
         context: Context,
         scheduled: MutableList<Long>
     ): String {
@@ -338,7 +338,7 @@ Tool call order: get_cell_history → get_weather_forecast (if needed) → sched
                 InspectionReminderWorker.KEY_BODY     to body,
                 InspectionReminderWorker.KEY_NOTIF_ID to notifId.toInt()
             ))
-            .addTag("cropguard_reminder")
+            .addTag("spraymind_reminder")
             .build()
 
         WorkManager.getInstance(context).enqueue(request)
@@ -361,7 +361,7 @@ Tool call order: get_cell_history → get_weather_forecast (if needed) → sched
     private suspend fun dismissNotifications(
         args: JSONObject,
         yardProfile: YardProfile,
-        db: CropGuardDatabase,
+        db: SprayMindDatabase,
         context: Context
     ): String {
         val arr      = args.getJSONArray("cellKeys")

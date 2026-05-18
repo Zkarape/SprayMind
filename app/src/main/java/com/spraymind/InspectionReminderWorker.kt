@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import android.content.Context
 import androidx.work.CoroutineWorker

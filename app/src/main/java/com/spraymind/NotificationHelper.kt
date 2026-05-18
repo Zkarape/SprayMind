@@ -1,4 +1,4 @@
-package com.cropguard
+package com.spraymind
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 
 object NotificationHelper {
 
-    const val CHANNEL_ID   = "cropguard_reminders"
+    const val CHANNEL_ID   = "spraymind_reminders"
     const val CHANNEL_NAME = "Crop Inspection Reminders"
 
     fun ensureChannel(context: Context) {
@@ -18,7 +18,7 @@ object NotificationHelper {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Smart re-inspection alerts scheduled by CropGuard"
+                description = "Smart re-inspection alerts scheduled by SprayMind"
             }
             context.getSystemService(NotificationManager::class.java)
                 .createNotificationChannel(channel)

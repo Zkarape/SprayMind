@@ -1,4 +1,4 @@
-package com.cropguard.ui
+package com.spraymind.ui
 
 import android.app.Activity
 import android.util.Log
@@ -67,13 +67,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.cropguard.AppState
-import com.cropguard.DetectionResult
-import com.cropguard.MainViewModel
-import com.cropguard.Severity
-import com.cropguard.db.YardProfile
-import com.cropguard.db.YardSession
-import com.cropguard.label
+import com.spraymind.AppState
+import com.spraymind.DetectionResult
+import com.spraymind.MainViewModel
+import com.spraymind.Severity
+import com.spraymind.db.YardProfile
+import com.spraymind.db.YardSession
+import com.spraymind.label
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -138,7 +138,7 @@ private fun BootScreen(title: String, subtitle: String) {
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = Modifier.padding(40.dp)
     ) {
-        Text("CropGuard", fontSize = 34.sp, fontWeight = FontWeight.Bold, color = GreenColor)
+        Text("SprayMind", fontSize = 34.sp, fontWeight = FontWeight.Bold, color = GreenColor)
         CircularProgressIndicator(color = GreenColor, modifier = Modifier.size(48.dp))
         Text(title,    color = Color.White, fontSize = 16.sp, textAlign = TextAlign.Center)
         Text(subtitle, color = Color.Gray,  fontSize = 13.sp, textAlign = TextAlign.Center)
@@ -165,7 +165,7 @@ private fun YardSelectScreen(
     ) {
         Spacer(Modifier.height(40.dp))
 
-        Text("CropGuard", color = GreenColor, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text("SprayMind", color = GreenColor, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Text("Your Fields",  color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Medium)
 
         Spacer(Modifier.height(20.dp))
@@ -268,7 +268,7 @@ private fun YardSetupScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(horizontal = 36.dp)
     ) {
-        Text("CropGuard", color = GreenColor, fontSize = 34.sp, fontWeight = FontWeight.Bold)
+        Text("SprayMind", color = GreenColor, fontSize = 34.sp, fontWeight = FontWeight.Bold)
         Text(
             if (existing != null) "Edit Field" else "New Field",
             color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Medium
@@ -449,7 +449,7 @@ private fun CameraPreview(
                             imageCapture
                         )
                     } catch (e: Exception) {
-                        Log.e("CropGuard", "Camera bind failed", e)
+                        Log.e("SprayMind", "Camera bind failed", e)
                     }
                 }, ContextCompat.getMainExecutor(ctx))
             }
@@ -709,7 +709,7 @@ private fun FinishedScreen(viewModel: MainViewModel) {
     ) {
         Spacer(Modifier.height(32.dp))
 
-        Text("CropGuard",        color = GreenColor,  fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text("SprayMind",        color = GreenColor,  fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Text("Session Complete",  color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Medium)
 
         activeProfile?.let {

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.cropguard"
+    namespace = "com.spraymind"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.cropguard"
+        applicationId = "com.spraymind"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

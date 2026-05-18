@@ -1,4 +1,4 @@
-package com.cropguard.db
+package com.spraymind.db
 
 import androidx.room.Dao
 import androidx.room.Insert

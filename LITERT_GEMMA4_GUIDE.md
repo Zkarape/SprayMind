@@ -1,6 +1,6 @@
-# CropGuard — LiteRT + Gemma 4 Effective Usage Guide
+# SprayMind — LiteRT + Gemma 4 Effective Usage Guide
 
-> **Goal:** Make CropGuard the most effective showcase of on-device multimodal inference
+> **Goal:** Make SprayMind the most effective showcase of on-device multimodal inference
 > with LiteRT-LM and Gemma 4 on Android — lowest latency, lowest battery draw, highest
 > result quality, with no server dependency after first setup.
 
@@ -124,7 +124,7 @@ The keep rules target three areas:
 |---|---|
 | `com.google.ai.edge.litertlm.**` | JNI-accessed; R8 cannot see native call-sites |
 | `kotlinx.coroutines.*Factory` | ServiceLoader-resolved at runtime for the main dispatcher |
-| `com.cropguard.DetectionResult`, `Severity` | Data layer safety net under full-mode shrinking |
+| `com.spraymind.DetectionResult`, `Severity` | Data layer safety net under full-mode shrinking |
 
 ---
 
@@ -419,9 +419,9 @@ registering a persistent listener — zero overhead between frames.
 During `AppState.Live`, every inter-frame delay is logged:
 
 ```
-D/CropGuard: Next frame in 3000ms (thermal=0, battery=87%)
-D/CropGuard: Next frame in 6000ms (thermal=2, battery=85%)  ← device warming up
-D/CropGuard: Next frame in 12000ms (thermal=3, battery=83%) ← throttling; backing off
+D/SprayMind: Next frame in 3000ms (thermal=0, battery=87%)
+D/SprayMind: Next frame in 6000ms (thermal=2, battery=85%)  ← device warming up
+D/SprayMind: Next frame in 12000ms (thermal=3, battery=83%) ← throttling; backing off
 ```
 
 ---
@@ -558,10 +558,10 @@ Kotlinx.coroutines resolves the `Dispatchers.Main` implementation via `ServiceLo
 runtime. If these class names are obfuscated, coroutines fall back to a no-op dispatcher
 and nothing runs on the main thread.
 
-### CropGuard data layer
+### SprayMind data layer
 ```
--keep class com.cropguard.DetectionResult { *; }
--keep enum com.cropguard.Severity { *; }
+-keep class com.spraymind.DetectionResult { *; }
+-keep enum com.spraymind.Severity { *; }
 ```
 Conservative safety net. Kotlin data classes are normally kept by reference tracing, but
 this is explicit insurance under R8 full-mode (enabled by `proguard-android-optimize.txt`).
@@ -573,7 +573,7 @@ this is explicit insurance under R8 full-mode (enabled by `proguard-android-opti
 ### Logcat timing (quick)
 
 ```bash
-adb logcat -s CropGuard:D
+adb logcat -s SprayMind:D
 ```
 
 Key log lines to watch:
@@ -609,7 +609,7 @@ adb pull /data/misc/perfetto-traces/trace.pb
 # Open in ui.perfetto.dev
 ```
 
-Look for: `CropGuard.*analyzeFrame` slice duration, GPU utilization track, thermal throttle
+Look for: `SprayMind.*analyzeFrame` slice duration, GPU utilization track, thermal throttle
 events (shown as frequency drops on the CPU/GPU frequency tracks).
 
 ---
@@ -636,7 +636,7 @@ adb push gemma-4-E2B-it.litertlm /data/local/tmp/
 ```
 
 ### "GPU init failed, falling back to CPU"
-- Check `adb logcat -s CropGuard` for the full exception.
+- Check `adb logcat -s SprayMind` for the full exception.
 - Common causes: missing `libOpenCL.so` (older device), OOM during GPU init.
 - CPU fallback is automatic; inference will be slower but functional.
 
@@ -662,7 +662,7 @@ On production devices, you may need to move the cache to `context.cacheDir`.
 
 ### `retry()` has no effect after crash
 - Confirm `CropAnalyzer.close()` is called before `loadModel()` (already fixed in this version).
-- If still stuck: kill the app (`adb shell am force-stop com.cropguard`) and relaunch.
+- If still stuck: kill the app (`adb shell am force-stop com.spraymind`) and relaunch.
 
 ---
 
@@ -741,16 +741,16 @@ Use cases:
 During `AppState.Live`, every frame logs the active budget:
 
 ```
-D/CropGuard: analyzeFrame: budget=BALANCED (280 tokens, 700px)
-D/CropGuard: analyzeFrame: budget=LOW (140 tokens, 504px)      ← device warming up
-D/CropGuard: analyzeFrame: budget=MINIMAL (70 tokens, 350px)   ← thermal throttle
+D/SprayMind: analyzeFrame: budget=BALANCED (280 tokens, 700px)
+D/SprayMind: analyzeFrame: budget=LOW (140 tokens, 504px)      ← device warming up
+D/SprayMind: analyzeFrame: budget=MINIMAL (70 tokens, 350px)   ← thermal throttle
 ```
 
 Cross-reference with the pacing log to see both levers at work:
 
 ```
-D/CropGuard: Next frame in 12000ms (thermal=3, battery=72%)
-D/CropGuard: analyzeFrame: budget=MINIMAL (70 tokens, 350px)
+D/SprayMind: Next frame in 12000ms (thermal=3, battery=72%)
+D/SprayMind: analyzeFrame: budget=MINIMAL (70 tokens, 350px)
 ```
 
 ### Quality tradeoff

@@ -11,8 +11,8 @@
 
     <application
         android:allowBackup="true"
-        android:label="CropGuard"
-        android:theme="@style/Theme.CropGuard"
+        android:label="SprayMind"
+        android:theme="@style/Theme.SprayMind"
         android:supportsRtl="true">
 
         <!-- Required for LiteRT GPU backend (OpenCL); optional so app still runs on CPU-only devices -->
@@ -31,7 +31,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.cropguard.fileprovider"
+            android:authorities="com.spraymind.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

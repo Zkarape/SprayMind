@@ -1,4 +1,4 @@
-# CropGuard — Optimization Steps
+# SprayMind — Optimization Steps
 
 Goal: most efficient and feature-rich mobile app for farmers using LiteRT + Gemma 4 on Android.
 
